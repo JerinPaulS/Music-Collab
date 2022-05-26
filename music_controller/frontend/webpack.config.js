@@ -8,15 +8,17 @@ module.exports = {
     filename: "[name].js",
   },
   module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-        },
-      },
-    ],
+    rules: [{
+      test: /\.js$/,
+      exclude: /node_modules/,
+      use: ["babel-loader"]
+    },
+    {
+      test: /\.less$/,
+      use: [{ loader: 'style-loader' },
+      { loader: 'css-loader' }]
+    }
+  ]
   },
   optimization: {
     minimize: true,

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Grid, TextField, Button, Typography } from "@material-ui/core";
 import { BiSend } from "react-icons/bi";
 import { AiFillAudio } from "react-icons/ai";
+//import "/home/jerinpaul/Documents/Git/Music Colab/music_controller/frontend/static/css/index.css";
 
 export default class Jerry extends Component{
     
@@ -59,30 +60,22 @@ export default class Jerry extends Component{
                     </Typography>
                 </Grid>
                 <Grid item style={{ width: 500, height: 600, border: "0.4px solid gray", overflow: 'auto', behavior: 'smooth' }}>
-                    <div className="container">            
-                        <div className="card">
-                            <ul className="contractor_lists">                    
-                                {this.list.map(content=>(
-                                    <li>                            
-                                        <div className="boxes">                            
-                                            <div className="box1">
-                                                <div className="top">
-                                                    <h5>{content.name}</h5>
-                                                    <span>{content.contacts}</span>
-                                                </div>
-                                                <div className="position">
-                                                    <span><img src={content.image}/></span>
-                                                    <div className="message">
-                                                        <h6>{content.message}</h6>
-                                                        <span></span>
-                                                    </div>
-                                                </div>        
+                    <div className="container">
+                        <ul className="contractor_lists">                    
+                            {this.list.map((content, index) =>(
+                                <li>                            
+                                    <div class="incoming_msg">
+                                        <div class="incoming_msg_img"> <img src={content.image}/> </div>
+                                        <div class="received_msg">
+                                            <div class="received_withd_msg">
+                                                <p>{content.message}</p>
+                                                <span class="time_date"> 11:01 AM    |    Yesterday</span>
                                             </div>
                                         </div>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 </Grid>
                 <Grid item style={{ width: 500, height: 100 }}>
