@@ -1,27 +1,32 @@
+from urllib import response
+from django.http import HttpResponse
 from django.shortcuts import render
-from itsdangerous import Serializer
 from rest_framework import generics, status
-from yaml import serialize
 from .serializers import RoomSerializer, CreateRoomSerializer
 from .models import Room
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-# Create your views here.
+
 
 class RoomView(generics.ListAPIView):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
 
-class CrateRoomView(APIView):
+
+class CreateRoomView(APIView):
     serializer_class = CreateRoomSerializer
+
+    def get(self, request, form=None):
+        serializer = self.serializer_class(data=request.data)
+        return Response(status=status.HTTP_200_OK)
 
     def post(self, request, format=None):
         if not self.request.session.exists(self.request.session.session_key):
             self.request.session.create()
-        
+
         serializer = self.serializer_class(data=request.data)
-        if serialize.is_valid():
+        if serializer.is_valid():
             guest_can_pause = serializer.data.get('guest_can_pause')
             votes = serializer.data.get('votes')
             host = self.request.session.session_key
@@ -31,7 +36,10 @@ class CrateRoomView(APIView):
                 room.guest_can_pause = guest_can_pause
                 room.votes = votes
                 room.save(update_fields=['guest_can_pause', 'votes'])
+                return Response(RoomSerializer(room).data, status=status.HTTP_200_OK)
             else:
-                room =  Room(host=host, guest_can_pause=guest_can_pause, votes=votes)
+                room = Room(host=host, guest_can_pause=guest_can_pause, votes=votes)
                 room.save()
-            return Response(RoomSerializer(room.data, status=status.HTTP_201_CREATED))
+                return Response(RoomSerializer(room).data, status=status.HTTP_201_CREATED)
+
+        return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
