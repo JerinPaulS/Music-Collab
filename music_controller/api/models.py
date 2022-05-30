@@ -17,3 +17,8 @@ class Room(models.Model):
     guest_can_pause = models.BooleanField(null=False, default=False)
     votes = models.IntegerField(null=False, default=1)
     created_at = models.DateTimeField(auto_created=True)
+
+class Chat(models.Model):
+    initiator = models.CharField(max_length=20)
+    image = models.CharField(max_length=20)
+    message = models.CharField(max_length=1000)

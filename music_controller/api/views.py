@@ -2,12 +2,10 @@ from urllib import response
 from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework import generics, status
-from .serializers import RoomSerializer, CreateRoomSerializer
+from .serializers import ChatSerializer, RoomSerializer, CreateRoomSerializer
 from .models import Room
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
-
 
 class RoomView(generics.ListAPIView):
     queryset = Room.objects.all()
@@ -43,3 +41,19 @@ class CreateRoomView(APIView):
                 return Response(RoomSerializer(room).data, status=status.HTTP_201_CREATED)
 
         return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
+
+class ChatView(APIView):
+    serializer_class = ChatSerializer
+
+    def get(self, request, form=None):
+        serializer = self.serializer_class(data=request.data)
+        return Response(status=status.HTTP_200_OK)
+
+    def post(self, request, format=None):
+        serializer = self.serializer_class(data=request.data)
+        queryset = Room.objects.all()
+        curr = queryset
+        curr.initiator = "Test"
+        curr.image = "123"
+        curr.message = "Hey this is in the function"
+        return Response(ChatSerializer(curr).data, status=status.HTTP_201_CREATED)
