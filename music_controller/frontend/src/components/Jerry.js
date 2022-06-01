@@ -3,6 +3,8 @@ import { Grid, TextField, Button, Typography } from "@material-ui/core";
 import { BiSend } from "react-icons/bi";
 import { AiFillAudio } from "react-icons/ai";
 import { ContactsOutlined } from "@material-ui/icons";
+import { useEffect } from 'react';
+//import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 //import "/home/jerinpaul/Documents/Git/Music Colab/music_controller/frontend/static/css/index.css";
 
 export default class Jerry extends Component{
@@ -22,7 +24,7 @@ export default class Jerry extends Component{
 
     resetValue = () => {
         this.setState({value: ''});
-      }
+    }
 
     handleChange(event) {    
         this.setState({value: event.target.value});  
@@ -31,27 +33,27 @@ export default class Jerry extends Component{
     handleSend(event) {
         let temp;
         console.log('A name was submitted: ' + this.state.value);
-        event.preventDefault();        
-        this.list = this.list.concat([{
-            name:"Tom",
-            image:"https://imgur.com/Z5a96wR.png",
-            message:this.state.value,  
-        }]);
-        const requestOptions = {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({        
-              message: this.state.value,
-            }),
-          };
-
-        fetch("/api/chat", requestOptions)
-            .then((response) => response.json())
-            .then((data) => this.list.push({name:"Bot",
+        event.preventDefault();
+        if(this.state.value != ''){
+            this.list = this.list.concat([{
+                name:"Tom",
                 image:"https://imgur.com/Z5a96wR.png",
-                message:data.message}));
-        this.list = this.list;
-        this.resetValue();
+                message:this.state.value,  
+            }]);
+            const requestOptions = {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({        
+                message: this.state.value,
+                }),
+            };
+            fetch("/api/chat", requestOptions)
+                .then((response) => response.json())
+                .then((data) => this.list.push({name:"Bot",
+                    image:"https://imgur.com/Z5a96wR.png",
+                    message:data.message}));
+            this.resetValue();
+        }
     }
 
     render(){
