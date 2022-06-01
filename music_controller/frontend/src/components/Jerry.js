@@ -7,7 +7,6 @@ import { ContactsOutlined } from "@material-ui/icons";
 import { useEffect } from 'react';
 import { useSpeechSynthesis } from "react-speech-kit";
 //import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
-//import "/home/jerinpaul/Documents/Git/Music Colab/music_controller/frontend/static/css/index.css";
 
 const initialList = [{
     name:"Bot",
@@ -18,7 +17,7 @@ const initialList = [{
 
 function Jerry() {
     let [textVal, setVal] = useState('');    
-    const [list, setList] = React.useState(initialList);
+    let [list, setList] = React.useState(initialList);
 
     const resetValue = () => {
         setVal(() => "")
@@ -26,7 +25,7 @@ function Jerry() {
 
     const handleSend = (event) => {
         console.log('A name was submitted: ' + textVal);
-        event.preventDefault();
+        //event.preventDefault();
         if(textVal != ''){
             const newList = list.concat([{
                 name:"Tom",
@@ -45,13 +44,12 @@ function Jerry() {
                 .then((response) => response.json())
                 .then((data) => newList.push({name:"Bot",
                     image:"https://imgur.com/Z5a96wR.png",
-                    message:data.message}));
-            
+                    message:data.message}));            
             resetValue();
             setList(newList);
             console.log(newList);
         }
-    }
+    }    
 
     return (
         <Grid 
@@ -71,17 +69,34 @@ function Jerry() {
                 <div className="container">
                     <ul className="contractor_lists">                    
                         {list.map((content, index) =>(
-                            <li>                            
-                                <div class="incoming_msg">
-                                    <div class="incoming_msg_img"> <img src={content.image}/> </div>
-                                    <div class="received_msg">
-                                        <div class="received_withd_msg">
-                                            <p>{content.message}</p>
-                                            <span class="time_date"> 11:01 AM    |    Yesterday</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
+                            (() => {
+                                if (index % 2 == 0) {
+                                  return (
+                                        <li>                            
+                                            <div class="incoming_msg">
+                                                <div class="incoming_msg_img"> <img src={content.image}/> </div>
+                                                <div class="received_msg">
+                                                    <div class="received_withd_msg">
+                                                        <p>{content.message}</p>
+                                                        <span class="time_date"> 11:01 AM    |    Yesterday</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    )
+                                } else {
+                                    return (
+                                        <li>                            
+                                            <div class="outgoing_msg">
+                                                <div class="sent_msg">
+                                                    <p>{content.message}</p>
+                                                    <span class="time_date"> 11:01 AM    |    Yesterday</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    )
+                                }
+                              })()                            
                         ))}
                     </ul>
                 </div>

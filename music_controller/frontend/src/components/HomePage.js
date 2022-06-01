@@ -12,7 +12,6 @@ import {
 import Room from "./Room";
 import Jerry from "./Jerry";
 import Transportation from "./Transportation";
-//import "/home/jerinpaul/Documents/Git/Music Colab/music_controller/frontend/static/css/index.css";
 
 function HomePage(){
   return (
